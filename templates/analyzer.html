@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HealthMate Analyzer</title>
+
+    <!-- GOOGLE FONT -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f4f7fb;
+            display:flex;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar{
+            width:250px;
+            height:100vh;
+            background:#111827;
+            color:white;
+            position:fixed;
+            left:0;
+            top:0;
+            padding:25px 20px;
+        }
+
+        .logo{
+            font-size:28px;
+            font-weight:700;
+            margin-bottom:40px;
+            text-align:center;
+        }
+
+        .sidebar a{
+            display:block;
+            color:#d1d5db;
+            text-decoration:none;
+            padding:14px;
+            margin-bottom:10px;
+            border-radius:10px;
+            transition:0.3s;
+        }
+
+        .sidebar a:hover{
+            background:#1f2937;
+            color:white;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main{
+            margin-left:250px;
+            width:calc(100% - 250px);
+            padding:30px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .header{
+            background:white;
+            padding:25px;
+            border-radius:20px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom:30px;
+        }
+
+        .header h1{
+            color:#111827;
+            margin-bottom:10px;
+        }
+
+        .header p{
+            color:#6b7280;
+        }
+
+        /* ================= UPLOAD ================= */
+
+        .upload-box{
+            background:white;
+            padding:40px;
+            border-radius:20px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.05);
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .upload-btn{
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:14px 22px;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:15px;
+            transition:0.3s;
+            margin-top:20px;
+        }
+
+        .upload-btn:hover{
+            background:#1d4ed8;
+        }
+
+        /* ================= PREMIUM UPLOAD ================= */
+
+        .custom-upload{
+
+            display:inline-block;
+
+            background:#2563eb;
+
+            color:white;
+
+            padding:14px 24px;
+
+            border-radius:12px;
+
+            cursor:pointer;
+
+            transition:0.3s;
+
+            font-weight:500;
+        }
+
+        .custom-upload:hover{
+
+            background:#1d4ed8;
+        }
+
+        .custom-upload input{
+
+            display:none;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section{
+            background:white;
+            padding:25px;
+            border-radius:20px;
+            margin-bottom:25px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .section h2{
+            margin-bottom:20px;
+            color:#111827;
+        }
+
+        /* ================= RESULT CARD ================= */
+
+        .result-card{
+            background:#f9fafb;
+            padding:15px;
+            border-radius:12px;
+            margin-bottom:12px;
+            border-left:5px solid #2563eb;
+        }
+
+        .result-card strong{
+            color:#111827;
+        }
+
+        /* ================= STATUS ================= */
+
+        .low{
+            color:#2563eb;
+            font-weight:600;
+        }
+
+        .high{
+            color:#dc2626;
+            font-weight:600;
+        }
+
+        .normal{
+            color:#16a34a;
+            font-weight:600;
+        }
+
+        .mild{
+            color:#f59e0b;
+            font-weight:600;
+        }
+
+        .severe{
+            color:#dc2626;
+            font-weight:700;
+        }
+
+        /* ================= LIST ================= */
+
+        .list-item{
+            background:#f9fafb;
+            padding:14px;
+            border-radius:10px;
+            margin-bottom:10px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width:768px){
+
+            .sidebar{
+                display:none;
+            }
+
+            .main{
+                margin-left:0;
+                width:100%;
+                padding:20px;
+            }
+
+            .upload-box{
+                padding:25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🧠 HealthMate
+    </div>
+
+    <a href="/">🏠 Dashboard</a>
+
+    <a href="/analyzer">📊 Analyzer</a>
+
+    <a href="/history">📂 History</a>
+
+    <a href="/profile">👤 Profile</a>
+
+    <a href="/pharmacy">💊 Pharmacy</a>
+
+    <a href="/chat-page">💬 AI Chat</a>
+
+    {% if session.get('user') %}
+
+        <a href="/logout">🚪 Logout</a>
+
+    {% else %}
+
+        <a href="/login">🔐 Login</a>
+
+        <a href="/register">📝 Register</a>
+
+    {% endif %}
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            📊 Medical Report Analyzer
+        </h1>
+
+        <p>
+            Upload your blood report, thyroid report,
+            diabetes report, vitamin test, or medical
+            PDF to get AI-powered health analysis.
+        </p>
+
+    </div>
+
+    <!-- UPLOAD -->
+
+    <div class="upload-box">
+
+        <!-- LOADER -->
+
+        <div
+            id="loader"
+            style="
+                display:none;
+                text-align:center;
+                margin-bottom:20px;
+            "
+        >
+
+            <img
+                src="https://i.gifer.com/ZZ5H.gif"
+                width="80"
+            >
+
+            <p>
+                AI is analyzing your report...
+            </p>
+
+        </div>
+
+        <!-- ERROR -->
+
+        {% if error %}
+
+            <div
+                style="
+                    background:#fee2e2;
+                    color:#dc2626;
+                    padding:15px;
+                    border-radius:10px;
+                    margin-bottom:20px;
+                "
+            >
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+        <!-- FORM -->
+
+        <form
+            action="/analyze"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <label class="custom-upload">
+
+                📁 Choose Medical Report
+
+                <input
+                    type="file"
+                    name="report"
+                    accept=".pdf,.png,.jpg,.jpeg,.txt"
+                    required
+                >
+
+            </label>
+
+            <div
+                id="file-name"
+                style="
+                    margin-top:15px;
+                    color:#6b7280;
+                    font-size:14px;
+                "
+            >
+                No file selected
+            </div>
+
+            <button
+                class="upload-btn"
+                type="submit"
+            >
+                🚀 Analyze Report
+            </button>
+
+        </form>
+
+    </div>
+
+    {% if result %}
+
+    <!-- SUMMARY -->
+
+    <div class="section">
+
+        <h2>🧾 Health Summary</h2>
+
+        <div class="result-card">
+            {{ result.summary }}
+        </div>
+
+    </div>
+
+    <!-- ANALYSIS -->
+
+    <div class="section">
+
+        <h2>📊 Analysis Results</h2>
+
+        {% for key, val in result.analysis.items() %}
+
+        <div class="result-card">
+
+            <strong>
+                {{ key.upper() }}
+            </strong>
+
+            :
+
+            {{ val.value }}
+
+            →
+
+            <span class="{{ val.status }}">
+                {{ val.status }}
+            </span>
+
+            {% if val.severity %}
+
+                (
+                <span class="{{ val.severity }}">
+                    {{ val.severity }}
+                </span>
+                )
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- DIET -->
+
+    <div class="section">
+
+        <h2>🥗 Diet Recommendations</h2>
+
+        {% for d in result.diet %}
+
+        <div class="list-item">
+            🍽 {{ d }}
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- EXERCISE -->
+
+    <div class="section">
+
+        <h2>🏃 Exercise Recommendations</h2>
+
+        {% for e in result.exercise %}
+
+        <div class="list-item">
+            💪 {{ e }}
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- PDF DOWNLOAD -->
+
+    <div class="section">
+
+        <a href="/download">
+
+            <button class="upload-btn">
+
+                📄 Download PDF Report
+
+            </button>
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+document
+.querySelector('form')
+
+.addEventListener(
+
+    'submit',
+
+    function(){
+
+        document
+        .getElementById('loader')
+        .style.display = 'block';
+    }
+);
+
+const fileInput = document.querySelector(
+    'input[type="file"]'
+);
+
+const fileName = document.getElementById(
+    'file-name'
+);
+
+fileInput.addEventListener(
+
+    'change',
+
+    function(){
+
+        if(this.files.length > 0){
+
+            fileName.innerHTML =
+                "✅ " + this.files[0].name;
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>

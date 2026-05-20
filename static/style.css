@@ -1,0 +1,252 @@
+body {
+    font-family: Arial;
+    background: #eef2f7;
+    margin: 0;
+    transition: 0.3s;
+}
+
+.container {
+    max-width: 850px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+h2 {
+    color: #34495e;
+}
+
+/* Buttons */
+
+button {
+    padding: 10px 15px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #219150;
+}
+
+/* Dark Mode Button */
+
+.dark-btn{
+    float:right;
+    margin-top:-55px;
+    background:#111827;
+}
+
+.dark-btn:hover{
+    background:#1f2937;
+}
+
+/* Tabs */
+
+.tabs button {
+    background: #3498db;
+    margin-right: 5px;
+}
+
+.tabs button:hover{
+    background:#2980b9;
+}
+
+/* Cards */
+
+.card {
+    background: #f8f9fb;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border-left: 5px solid #3498db;
+    transition: 0.3s;
+}
+
+/* Status Colors */
+
+.low {
+    color: blue;
+}
+
+.high {
+    color: red;
+}
+
+.normal {
+    color: green;
+}
+
+/* Severity */
+
+.severe {
+    font-weight: bold;
+    color: red;
+}
+
+.mild {
+    color: orange;
+}
+
+/* Chat */
+
+.chatbox {
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.chat-messages {
+    height: 220px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    background: #fafafa;
+    transition: 0.3s;
+}
+
+.user {
+    text-align: right;
+    color: blue;
+    margin: 5px;
+}
+
+.bot {
+    text-align: left;
+    color: green;
+    margin: 5px;
+}
+
+input[type="text"] {
+    width: 70%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: 0.3s;
+}
+
+/* ================= DARK MODE ================= */
+
+.dark{
+
+    background:#111827;
+
+    color:white;
+}
+
+.dark .container{
+
+    background:#1f2937;
+
+    color:white;
+}
+
+.dark h1,
+.dark h2{
+
+    color:white;
+}
+
+.dark .card{
+
+    background:#374151;
+
+    color:white;
+
+    border-left:5px solid #60a5fa;
+}
+
+.dark .chat-messages{
+
+    background:#374151;
+
+    border:1px solid #555;
+}
+
+.dark input[type="text"]{
+
+    background:#374151;
+
+    color:white;
+
+    border:1px solid #555;
+}
+
+.dark button{
+
+    background:#2563eb;
+}
+
+.dark button:hover{
+
+    background:#1d4ed8;
+}
+
+.dark .tabs button{
+
+    background:#2563eb;
+}
+
+.dark .bot{
+
+    color:#93c5fd;
+}
+
+.dark .user{
+
+    color:#f9fafb;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    .container{
+
+        width:95%;
+
+        margin:20px auto;
+
+        padding:15px;
+    }
+
+    input[type="text"]{
+
+        width:100%;
+
+        margin-bottom:10px;
+    }
+
+    button{
+
+        width:100%;
+    }
+
+    .tabs button{
+
+        width:100%;
+
+        margin-bottom:10px;
+    }
+
+    .dark-btn{
+
+        width:auto;
+
+        float:none;
+
+        margin-top:10px;
+    }
+}

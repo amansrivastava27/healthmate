@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthMate Dashboard</title>
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#f4f7fb;
+            display:flex;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar{
+            width:250px;
+            height:100vh;
+            background:#111827;
+            color:white;
+            position:fixed;
+            left:0;
+            top:0;
+            padding:25px 20px;
+        }
+
+        .logo{
+            font-size:28px;
+            font-weight:700;
+            margin-bottom:40px;
+            text-align:center;
+        }
+
+        .sidebar a{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            color:#d1d5db;
+            text-decoration:none;
+            padding:14px;
+            margin-bottom:10px;
+            border-radius:10px;
+            transition:0.3s;
+            font-size:15px;
+        }
+
+        .sidebar a:hover{
+            background:#1f2937;
+            color:white;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main{
+            margin-left:250px;
+            width:calc(100% - 250px);
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar{
+            background:white;
+            padding:20px 35px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .topbar h2{
+            color:#111827;
+            font-size:24px;
+        }
+
+        .profile{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .profile img{
+            width:45px;
+            height:45px;
+            border-radius:50%;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero{
+            margin:30px;
+            background:linear-gradient(135deg,#2563eb,#06b6d4);
+            border-radius:20px;
+            padding:50px;
+            color:white;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            overflow:hidden;
+        }
+
+        .hero-text h1{
+            font-size:42px;
+            margin-bottom:15px;
+        }
+
+        .hero-text p{
+            font-size:18px;
+            opacity:0.9;
+            line-height:1.6;
+        }
+
+        .hero img{
+            width:320px;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:20px;
+            padding:0 30px;
+        }
+
+        .stat-card{
+            background:white;
+            border-radius:18px;
+            padding:25px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.05);
+            transition:0.3s;
+        }
+
+        .stat-card:hover{
+            transform:translateY(-5px);
+        }
+
+        .stat-card h3{
+            color:#6b7280;
+            margin-bottom:10px;
+            font-size:15px;
+        }
+
+        .stat-card h1{
+            color:#111827;
+            font-size:34px;
+        }
+
+        /* ================= FEATURES ================= */
+
+        .section-title{
+            padding:35px 30px 15px;
+            color:#111827;
+            font-size:28px;
+            font-weight:600;
+        }
+
+        .features{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:25px;
+            padding:0 30px 40px;
+        }
+
+        .feature-card{
+            background:white;
+            border-radius:20px;
+            padding:25px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.05);
+            transition:0.3s;
+        }
+
+        .feature-card:hover{
+            transform:translateY(-5px);
+        }
+
+        .feature-card img{
+            width:80px;
+            margin-bottom:20px;
+        }
+
+        .feature-card h3{
+            margin-bottom:12px;
+            color:#111827;
+        }
+
+        .feature-card p{
+            color:#6b7280;
+            line-height:1.6;
+            margin-bottom:20px;
+        }
+
+        .feature-card a{
+            text-decoration:none;
+            background:#2563eb;
+            color:white;
+            padding:10px 16px;
+            border-radius:10px;
+            display:inline-block;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:900px){
+
+            .sidebar{
+                display:none;
+            }
+
+            .main{
+                margin-left:0;
+                width:100%;
+            }
+
+            .hero{
+                flex-direction:column;
+                text-align:center;
+                gap:30px;
+            }
+
+            .hero img{
+                width:220px;
+            }
+        }
+
+    </style>
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🧠 HealthMate
+    </div>
+
+    <a href="/">🏠 Dashboard</a>
+
+    <a href="/analyzer">📊 Report Analyzer</a>
+
+    <a href="/history">📂 Patient History</a>
+
+    <a href="/pharmacy">💊 Pharmacy</a>
+
+    <a href="/chat-page">💬 AI Assistant</a>
+
+    <a href="/profile">👤 Profile</a>
+
+    {% if session.get('user') %}
+
+<a href="#">
+    👤 {{ session.get('user') }}
+</a>
+
+<a href="/logout">
+    🚪 Logout
+</a>
+
+{% else %}
+
+<a href="/login">
+    🔐 Login
+</a>
+
+<a href="/register">
+    📝 Register
+</a>
+
+{% endif %}
+
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <h2>
+            Welcome Back 👋
+        </h2>
+
+        <button
+    onclick="toggleDarkMode()"
+    class="dark-btn"
+>
+    🌙
+</button>
+
+        <div class="profile">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+
+            <div>
+                <strong>
+                    {{ session.get('user','Guest') }}
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+        <div class="hero-text">
+
+            <h1>
+                AI Powered Healthcare Platform
+            </h1>
+
+            <p>
+                Analyze reports, detect diseases,
+                generate diet plans, monitor health,
+                and chat with AI medical assistant.
+            </p>
+
+        </div>
+
+        <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png">
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <h3>Total Reports</h3>
+            <h1>128</h1>
+        </div>
+
+        <div class="stat-card">
+            <h3>Patients Monitored</h3>
+            <h1>54</h1>
+        </div>
+
+        <div class="stat-card">
+            <h3>AI Accuracy</h3>
+            <h1>97%</h1>
+        </div>
+
+        <div class="stat-card">
+            <h3>Health Score</h3>
+            <h1>89%</h1>
+        </div>
+
+    </div>
+
+    <!-- FEATURES -->
+
+    <div class="section-title">
+        Explore Features 🚀
+    </div>
+
+    <!-- ================= CHARTS ================= -->
+
+<div class="section-title">
+    Health Analytics 📊
+</div>
+
+<div
+    style="
+        padding:30px;
+    "
+>
+
+    <div
+        style="
+            background:white;
+            padding:25px;
+            border-radius:20px;
+            box-shadow:0 5px 20px rgba(0,0,0,0.05);
+        "
+    >
+
+        <canvas id="healthChart"></canvas>
+
+    </div>
+
+</div>
+
+    <div class="features">
+
+        <!-- ANALYZER -->
+
+        <div class="feature-card">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/2966/2966487.png">
+
+            <h3>Medical Report Analyzer</h3>
+
+            <p>
+                Upload medical reports and get AI based
+                disease detection, abnormality analysis,
+                and health recommendations.
+            </p>
+
+            <a href="/analyzer">
+                Open Analyzer
+            </a>
+
+        </div>
+
+        <!-- CHAT -->
+
+        <div class="feature-card">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
+
+            <h3>AI Health Assistant</h3>
+
+            <p>
+                Ask medical questions, understand reports,
+                get exercise guidance, and recovery tips.
+            </p>
+
+            <a href="/chat-page">
+                Start Chat
+            </a>
+
+        </div>
+
+        <!-- PHARMACY -->
+
+        <div class="feature-card">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png">
+
+            <h3>Digital Pharmacy</h3>
+
+            <p>
+                Explore vitamins, supplements,
+                diabetes care products,
+                and medical essentials.
+            </p>
+
+            <a href="/pharmacy">
+                Visit Pharmacy
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById('healthChart');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May'
+        ],
+
+        datasets: [
+
+            {
+                label: 'Glucose',
+
+                data: [
+                    110,
+                    140,
+                    125,
+                    135,
+                    115
+                ],
+
+                borderWidth: 3
+            },
+
+            {
+                label: 'Cholesterol',
+
+                data: [
+                    180,
+                    200,
+                    190,
+                    170,
+                    185
+                ],
+
+                borderWidth: 3
+            }
+
+        ]
+    },
+
+    options: {
+
+        responsive: true
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
