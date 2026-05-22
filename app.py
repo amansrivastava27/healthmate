@@ -148,6 +148,11 @@ def ask_ai(message, report):
             "AI service temporarily unavailable."
         )
 
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+
 # =========================
 # HOME
 # =========================
